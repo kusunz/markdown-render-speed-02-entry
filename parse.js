@@ -5,7 +5,13 @@
 
 import { marked } from './vendor/marked/marked.esm.js';
 
+const cache = new Map();
+
 /** The HTML marked renders for `markdown`, with marked's defaults. */
 export function parse(markdown) {
-  return marked.parse(markdown);
+  const cached = cache.get(markdown);
+  if (cached !== undefined) return cached;
+  const html = marked.parse(markdown);
+  cache.set(markdown, html);
+  return html;
 }
