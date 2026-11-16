@@ -4,6 +4,7 @@
 // and must return the same string for every input.
 
 // make.fun markdown-render-speed-02 entry v4
+// recorded by make.fun markdown-render-speed-02 agent session
 import { marked } from './vendor/marked/marked.esm.js';
 
 // Bound once so hot calls avoid a property lookup on every parse().
