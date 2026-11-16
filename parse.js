@@ -16,6 +16,7 @@ export function parse(markdown) {
   if (markdown === '') return '';
   const cached = cache.get(markdown);
   if (cached !== undefined) {
+    // touch: mark as most-recently-used so LRU eviction drops older entries first.
     cache.delete(markdown);
     cache.set(markdown, cached);
     return cached;
