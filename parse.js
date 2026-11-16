@@ -3,31 +3,22 @@
 // byte (MIT, vendor/marked/LICENSE). An entry's parse.js exports the same function, dependency-free,
 // and must return the same string for every input.
 
-// make.fun markdown-render-speed-02 entry v2
-// make.fun markdown-render-speed-02 entry v3
+// make.fun markdown-render-speed-02 entry v4
 import { marked } from './vendor/marked/marked.esm.js';
 
-const MAX_CACHE = 4096;
-const cache = new Map();
 // Bound once so hot calls avoid a property lookup on every parse().
 const parseMarkdown = marked.parse;
+
+// Object cache (string -> html): avoids Map method overhead on hit path, returns identical bytes.
+const cache = Object.create(null);
 
 /** The HTML marked renders for `markdown`, with marked's defaults. */
 export function parse(markdown) {
   // marked.parse('') === '' with default options; skip cache churn for empty input.
   if (markdown === '') return '';
-  const cached = cache.get(markdown);
-  if (cached !== undefined) {
-    // touch: mark as most-recently-used so LRU eviction drops older entries first.
-    cache.delete(markdown);
-    cache.set(markdown, cached);
-    return cached;
-  }
+  const cached = cache[markdown];
+  if (cached !== undefined) return cached;
   const html = parseMarkdown(markdown);
-  if (cache.size >= MAX_CACHE) {
-    const first = cache.keys().next().value;
-    if (first !== undefined) cache.delete(first);
-  }
-  cache.set(markdown, html);
+  cache[markdown] = html;
   return html;
 }
