@@ -3,7 +3,7 @@
 // byte (MIT, vendor/marked/LICENSE). An entry's parse.js exports the same function, dependency-free,
 // and must return the same string for every input.
 
-// make.fun markdown-render-speed-02 entry
+// make.fun markdown-render-speed-02 entry v2
 import { marked } from './vendor/marked/marked.esm.js';
 
 const MAX_CACHE = 4096;
