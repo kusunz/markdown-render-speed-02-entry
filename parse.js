@@ -5,13 +5,22 @@
 
 import { marked } from './vendor/marked/marked.esm.js';
 
+const MAX_CACHE = 4096;
 const cache = new Map();
 
 /** The HTML marked renders for `markdown`, with marked's defaults. */
 export function parse(markdown) {
   const cached = cache.get(markdown);
-  if (cached !== undefined) return cached;
+  if (cached !== undefined) {
+    cache.delete(markdown);
+    cache.set(markdown, cached);
+    return cached;
+  }
   const html = marked.parse(markdown);
+  if (cache.size >= MAX_CACHE) {
+    const first = cache.keys().next().value;
+    if (first !== undefined) cache.delete(first);
+  }
   cache.set(markdown, html);
   return html;
 }
