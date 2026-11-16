@@ -4,6 +4,7 @@
 // and must return the same string for every input.
 
 // make.fun markdown-render-speed-02 entry v2
+// make.fun markdown-render-speed-02 entry v3
 import { marked } from './vendor/marked/marked.esm.js';
 
 const MAX_CACHE = 4096;
